@@ -6,10 +6,13 @@
 /*.rbxl.lock
 
 # Wally Packages
-Packages\
+Packages/
 
 # Place files
 *.rbxl
 *.rbxlx
+
+# Selene
+selene.toml
 
 sourcemap.json
