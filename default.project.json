@@ -4,8 +4,16 @@
     "$className": "DataModel",
 
     "ReplicatedStorage": {
+      "Utilities": {
+          "$path": "Packages"
+      },
+
       "Shared": {
-        "$path": "src/shared"
+        "$path": "src/shared",
+        
+        "Events": {
+          "$className": "Folder"
+        }
       }
     },
 
