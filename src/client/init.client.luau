@@ -3,14 +3,18 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local CommClient = require(ReplicatedStorage.Shared.CommClient)
 local CommShared = require(ReplicatedStorage.Shared.CommShared)
 
-local _sendOverflow = true
+local _Overflow = false
 
 CommClient:Send(CommShared.Events.TestEvent, {
 	number = 455,
 	text = "hello",
 })
 
-while _sendOverflow do
+CommClient.Events.testEvent:Connect(function(args: {})
+	print(`[{time}] Hello from Client! args:`, args)
+end)
+
+while _Overflow do
 	CommClient:Send(CommShared.Events.TestEvent, {
 		number = 455,
 		text = "hello",

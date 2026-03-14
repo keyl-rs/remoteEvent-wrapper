@@ -1,9 +1,13 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local CommShared = require(ReplicatedStorage.Shared.CommShared)
+local GoodSignal = require(ReplicatedStorage.Utilities.goodsignal)
+
 local Events = ReplicatedStorage.Shared.Events
 
 local CommClient = {}
+
+CommClient.Events = {}
 
 function CommClient:Send(eventEnum: CommShared.EventEnum, args: {})
 	local Event: RemoteEvent = Events:FindFirstChild(eventEnum.Name)
@@ -21,6 +25,27 @@ function CommClient:Send(eventEnum: CommShared.EventEnum, args: {})
 
 		CommShared:Log(`Event does not exist`, CommShared.LogLevels.Warn)
 	end
+end
+
+for _, v: CommShared.EventEnum in CommShared.Events do
+	local newRemote = ReplicatedStorage.Shared.Events:WaitForChild(v.Name)
+	CommClient.Events[v.Name] = GoodSignal.new()
+
+	newRemote.OnClientEvent:Connect(function(args: { [any]: any })
+		local signal: GoodSignal.Signal = CommClient.Events[v.Name]
+
+		local success, result = pcall(function()
+			signal:Fire(args)
+		end)
+
+		if success then
+			CommShared:Log(`Signal fired successfully: {v.Name}`, CommShared.LogLevels.Info)
+		else
+			CommShared:Log(`Signal failed to fire: {result}`, CommShared.LogLevels.Error)
+		end
+	end)
+
+	newRemote.Parent = ReplicatedStorage.Shared.Events
 end
 
 return CommClient

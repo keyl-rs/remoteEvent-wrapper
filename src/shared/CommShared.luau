@@ -3,11 +3,12 @@ export type EventEnum = {
 	Schema: {
 		[any]: any,
 	},
+	RateLimit: number,
 }
 
 local CommShared = {}
 
-CommShared.Debug = false
+CommShared.Debug = true
 
 CommShared.LogLevels = {
 	Info = "INFO",
@@ -22,6 +23,7 @@ CommShared.Events = {
 			number = "number",
 			text = "string",
 		},
+		RateLimit = 5,
 	},
 }
 
